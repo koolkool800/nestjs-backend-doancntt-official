@@ -1,4 +1,5 @@
 import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common';
+import { Response } from 'express';
 import { SignInInput, SignUpInput } from 'src/auth/dto/auth.dto';
 import { AdminService } from './admin.service';
 
@@ -8,7 +9,7 @@ export class AdminController {
 
   @Post('')
   async createSuperAdmin(
-    @Res() response,
+    @Res() response: Response,
     @Body() input: SignUpInput,
   ): Promise<any> {
     const createdAdmin = await this.adminService.signUpSuperAdmin(input);
@@ -25,7 +26,10 @@ export class AdminController {
   }
 
   @Post('/login')
-  async loginAdmin(@Res() response, @Body() input: SignInInput): Promise<any> {
+  async loginAdmin(
+    @Res() response: Response,
+    @Body() input: SignInInput,
+  ): Promise<any> {
     const user = await this.adminService.loginAdmin(input);
 
     if (user) {
