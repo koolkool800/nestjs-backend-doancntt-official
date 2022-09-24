@@ -5,6 +5,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Admin } from './entities/admin.entity';
 import { AdminSchema } from './schemas/admin.schema';
 import { UserModule } from '../user/user.module';
+import { JwtModule } from '@nestjs/jwt';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
   imports: [
@@ -14,6 +16,11 @@ import { UserModule } from '../user/user.module';
         schema: AdminSchema,
       },
     ]),
+    JwtModule.register({
+      secret: 'topSecret51',
+      signOptions: { expiresIn: '1h' },
+    }),
+    PassportModule.register({ defaultStrategy: 'jwt' }),
     UserModule,
   ],
   controllers: [AdminController],
