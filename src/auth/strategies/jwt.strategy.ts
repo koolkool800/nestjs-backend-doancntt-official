@@ -22,4 +22,4 @@ export class JsonWebTokenStrategy extends PassportStrategy(Strategy) {
 
     return findUser ? findUser : null;
   }
-}
+} //
