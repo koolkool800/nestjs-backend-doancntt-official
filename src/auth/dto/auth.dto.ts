@@ -22,5 +22,6 @@ export class SignUpInput extends BaseUser {
 
 export class SignInInput extends BaseUser {
   @Prop()
+  @IsNotEmpty()
   password: string;
 }

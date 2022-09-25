@@ -32,7 +32,10 @@ export class AdminService {
     return await newAdmin.save();
   }
 
+  //this function not for login, just for checking that is user correct or not
   async validateAdmin(input: SignInInput): Promise<Admin> {
+    console.log('input at validate admin ', input);
+
     const foundAdmin = await this.adminModel.findOne({ email: input.email });
     const { password } = input;
     const hashedPassword = foundAdmin.password;
@@ -46,6 +49,7 @@ export class AdminService {
     return null;
   }
 
+  //function used to login in controller
   async loginAdmin(
     input: SignInInput,
   ): Promise<{ id: string; accessToken: string }> {
@@ -55,6 +59,7 @@ export class AdminService {
     if (loginValid) {
       const payload: IJWTPayload = {
         _id: loginValid._id,
+        role: RoleEnum.ADMIN,
       };
 
       console.log('payload : ', payload);
@@ -70,5 +75,9 @@ export class AdminService {
     }
 
     return null;
+  }
+
+  async getAdminById(id: string) {
+    return await this.adminModel.findById(id);
   }
 }

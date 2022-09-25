@@ -20,8 +20,7 @@ export class AuthenticationGuard extends AuthGuard('jwt') {
     context: ExecutionContext,
     status?: any,
   ): TUser {
-    console.log('err' + err);
-    console.log('user' + user);
+    console.log('user ', user);
 
     if (err || !user) {
       console.log('un auth 1');

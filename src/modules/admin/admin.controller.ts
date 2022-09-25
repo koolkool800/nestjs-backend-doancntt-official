@@ -33,11 +33,9 @@ export class AdminController {
     const user = await this.adminService.loginAdmin(input);
 
     if (user) {
-      const cloneUser = { ...user };
-      delete cloneUser['password'];
       return response.status(HttpStatus.OK).json({
         msg: 'Login success',
-        data: cloneUser,
+        data: user,
       });
     }
     return response.status(HttpStatus.BAD_REQUEST).json({
