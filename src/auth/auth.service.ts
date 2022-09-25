@@ -11,6 +11,7 @@ import { UserService } from 'src/modules/user/user.service';
 import { SignInInput, SignUpInput } from './dto/auth.dto';
 import { IJWTPayload } from './entities/auth.entity';
 import * as bcrypt from 'bcrypt';
+import { RoleEnum } from 'src/constants/enum';
 @Injectable()
 export class AuthService {
   constructor(
@@ -34,8 +35,8 @@ export class AuthService {
     if (loginValid) {
       const payload: IJWTPayload = {
         _id: loginValid._id,
+        role: RoleEnum.USER,
       };
-      console.log(payload);
 
       const returnPayload = {
         id: payload._id,
@@ -70,4 +71,3 @@ export class AuthService {
     return await this.userService.getAllUser();
   }
 }
-

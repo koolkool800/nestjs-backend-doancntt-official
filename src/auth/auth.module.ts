@@ -9,6 +9,7 @@ import { PassportModule } from '@nestjs/passport';
 import { MongooseModule } from '@nestjs/mongoose';
 // import { User } from 'src/modules/user/entities/user.entity';
 import { UserSchema } from 'src/modules/user/schemas/user.schema';
+import { AdminModule } from 'src/modules/admin/admin.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { UserSchema } from 'src/modules/user/schemas/user.schema';
         expiresIn: '1h',
       },
     }),
+    AdminModule,
     // MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
   ],
   controllers: [AuthController],

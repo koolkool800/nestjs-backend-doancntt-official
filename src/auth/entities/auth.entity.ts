@@ -1,12 +1,17 @@
 import { Prop } from '@nestjs/mongoose';
 import { IsNotEmpty } from 'class-validator';
 import mongoose from 'mongoose';
+import { RoleEnum } from 'src/constants/enum';
 import { User } from 'src/modules/user/entities/user.entity';
 
 export class IJWTPayload {
   @Prop()
   @IsNotEmpty()
   _id: string;
+
+  @Prop()
+  @IsNotEmpty()
+  role: RoleEnum;
 }
 
 export class JWTPayload {
