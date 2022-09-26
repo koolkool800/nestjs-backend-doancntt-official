@@ -10,6 +10,7 @@ export const ProductSchema = new Schema<Product>(
     name: {
       type: String,
       trim: true,
+      unique: true,
     },
     category: {
       type: Schema.Types.ObjectId,
@@ -36,6 +37,9 @@ export const ProductSchema = new Schema<Product>(
     createdBy: {
       type: Schema.Types.ObjectId,
       ref: User.name,
+    },
+    slug: {
+      type: String,
     },
   },
   {

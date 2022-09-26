@@ -5,6 +5,7 @@ import {
   Get,
   HostParam,
   HttpStatus,
+  Param,
   Post,
   Put,
   Res,
@@ -17,6 +18,21 @@ import { ProductService } from './product.service';
 @Controller('products')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
+
+  @Get('/:slug')
+  async getProductBySlug(@Res() res: Response, @Param('slug') slug: string) {
+    const product = await this.productService.getProductBySlug(slug);
+    if (product) {
+      return res.status(HttpStatus.OK).json({
+        msg: 'Get success',
+        data: product,
+      });
+    }
+    return res.status(HttpStatus.BAD_REQUEST).json({
+      msg: 'Get failure',
+      data: null,
+    });
+  }
 
   @Post('/createProducts')
   async createProducts(@Body() inputs: CreateProductInput[]) {
@@ -38,7 +54,7 @@ export class ProductController {
     if (updatedProduct)
       return res.status(HttpStatus.OK).json({
         msg: 'updated success',
-        data: updatedProduct,
+        data: updatedProduct.slug,
       });
     return res.status(HttpStatus.BAD_REQUEST).json({
       msg: 'updated fail',

@@ -30,6 +30,9 @@ export class BaseProductInput implements IProduct {
 
   @Prop()
   createdBy: User;
+
+  @Prop()
+  slug?: string;
 }
 
 export class CreateProductInput implements Partial<BaseProductInput> {
@@ -57,7 +60,34 @@ export class CreateProductInput implements Partial<BaseProductInput> {
   @Prop()
   @IsNotEmpty()
   createdBy: User;
+
+  @Prop()
+  slug?: string;
 }
-export class UpdateProductInput implements Partial<BaseProductInput> {}
+export class UpdateProductInput implements Partial<BaseProductInput> {
+  @Prop()
+  name?: string;
+
+  @Prop()
+  images?: string[];
+
+  @Prop()
+  price?: string;
+
+  @Prop()
+  status?: StatusEnum;
+
+  @Prop()
+  desription?: string;
+
+  @Prop()
+  category?: Category;
+
+  @Prop()
+  createdBy?: User;
+
+  @Prop()
+  slug?: string;
+}
 
 export class FilterProduct {}
