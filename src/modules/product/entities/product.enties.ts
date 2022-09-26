@@ -39,5 +39,7 @@ export class Product implements IProduct {
   @Prop()
   updatedAt: Date;
 
+  @Prop()
+  slug?: string;
   // publictedAt;
 }
