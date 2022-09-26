@@ -9,8 +9,13 @@ import {
   Res,
   HttpStatus,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { Response } from 'express';
+import { Roles } from 'src/common/decorators/role.decorator';
+import { AuthenticationGuard } from 'src/common/guards/auth.guard';
+import { RolesGuard } from 'src/common/guards/roles.guard';
+import { RoleEnum } from 'src/constants/enum';
 import { CategoryService } from './category.service';
 import { CreateCategoryInput } from './dto/category.dto';
 
@@ -23,6 +28,8 @@ export class CategoryController {
     return this.categoryService.getAllCategory();
   }
 
+  @Roles(RoleEnum.ADMIN)
+  @UseGuards(AuthenticationGuard, RolesGuard)
   @Post('')
   async createCategory(
     @Res() res: Response,

@@ -14,8 +14,8 @@ import { AuthGuard } from '@nestjs/passport';
 import { Response } from 'express';
 import { AuthService } from './auth.service';
 import { SignInInput, SignUpInput } from './dto/auth.dto';
-import { AuthenticationGuard } from './guards/auth.guard';
-import { LocalAuthGuard } from './guards/local.guard';
+import { AuthenticationGuard } from '../common/guards/auth.guard';
+import { LocalAuthGuard } from '../common/guards/local.guard';
 
 @Controller('auth')
 export class AuthController {
