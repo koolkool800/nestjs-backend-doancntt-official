@@ -77,7 +77,7 @@ export class AdminService {
     return null;
   }
 
-  async getAdminById(id: string) {
+  async getAdminById(id: string): Promise<Admin> {
     return await this.adminModel.findById(id);
   }
 }

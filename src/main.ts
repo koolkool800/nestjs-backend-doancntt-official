@@ -1,6 +1,7 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { RolesGuard } from './common/guards/roles.guard';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -9,7 +10,7 @@ async function bootstrap() {
     origin: ['http://localhost:3000'],
   });
   app.useGlobalPipes(new ValidationPipe());
-
+  app.useGlobalGuards();
   await app.listen(2050);
 }
 bootstrap();
