@@ -16,12 +16,20 @@ export class CategoryService {
   }
 
   async createCategory(input: CreateCategoryInput): Promise<Category | null> {
-    // const foundCategory = await this.getCategoryByName(input.name);
+    const { parent } = input;
+
     const foundCategory = this.categoryModel.findOne({ name: input.name });
+    console.log('found category ', foundCategory);
+
     try {
       if (foundCategory) {
         const newCategory = new this.categoryModel(input);
         await newCategory.save();
+        if (parent) {
+          const categoryFather = await this.categoryModel.findById(parent);
+          categoryFather.hasChild = true;
+          await categoryFather.save();
+        }
         return newCategory;
       }
     } catch (error) {
