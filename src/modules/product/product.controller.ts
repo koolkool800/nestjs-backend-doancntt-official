@@ -21,7 +21,7 @@ export class ProductController {
 
   @Get('/:slug')
   async getProductBySlug(@Res() res: Response, @Param('slug') slug: string) {
-    const product = await this.productService.getProductBySlug(slug);
+    const product: Product = await this.productService.getProductBySlug(slug);
     if (product) {
       return res.status(HttpStatus.OK).json({
         msg: 'Get success',

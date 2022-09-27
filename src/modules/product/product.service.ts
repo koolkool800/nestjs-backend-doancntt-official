@@ -20,7 +20,7 @@ export class ProductService {
     return await this.productModel.findById(id).exec();
   }
 
-  async getProductBySlug(slug: string) {
+  async getProductBySlug(slug: string): Promise<any> {
     return await this.productModel.find({ slug });
   }
 

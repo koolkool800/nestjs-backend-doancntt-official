@@ -5,13 +5,13 @@ import { ICategory } from '../interfaces/category';
 
 export class BaseCategory {
   @Prop()
-  hasChild: boolean;
+  hasChild?: boolean;
 
   @Prop()
-  parent: Category;
+  parent?: Category;
 }
 
-export class CreateCategoryInput {
+export class CreateCategoryInput extends BaseCategory {
   @Prop()
   @IsNotEmpty()
   name: string;
