@@ -23,7 +23,6 @@ import { ProductService } from './product.service';
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
-  @UseGuards(AuthenticationGuard)
   @Get('/:slug')
   async getProductBySlug(@Res() res: Response, @Param('slug') slug: string) {
     const product: Product = await this.productService.getProductBySlug(slug);
