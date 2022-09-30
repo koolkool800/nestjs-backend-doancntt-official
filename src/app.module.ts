@@ -11,6 +11,7 @@ import { RolesGuard } from './common/guards/roles.guard';
 import { AdminModule } from './modules/admin/admin.module';
 import { CategoryModule } from './modules/category/category.module';
 import { ProductModule } from './modules/product/product.module';
+import { ConfigurationService } from './configuration/configuration/configuration.service';
 
 @Module({
   imports: [
@@ -32,6 +33,12 @@ import { ProductModule } from './modules/product/product.module';
     //   provide: APP_GUARD,
     //   useClass: RolesGuard,
     // },
+    ConfigurationService,
   ],
 })
-export class AppModule {}
+export class AppModule {
+  static port: number;
+  constructor(private readonly configurationService: ConfigurationService) {
+    AppModule.port = this.configurationService.port as number;
+  }
+}
