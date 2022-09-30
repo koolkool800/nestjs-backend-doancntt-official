@@ -9,8 +9,12 @@ import {
   Post,
   Put,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { Response } from 'express';
+import { CurrentUser } from 'src/common/decorators/user.decorator';
+import { AuthenticationGuard } from 'src/common/guards/auth.guard';
+import { User } from '../user/entities/user.entity';
 import { CreateProductInput, UpdateProductInput } from './dto/product.dto';
 import { Product } from './entities/product.enties';
 import { ProductService } from './product.service';
@@ -19,6 +23,7 @@ import { ProductService } from './product.service';
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
+  @UseGuards(AuthenticationGuard)
   @Get('/:slug')
   async getProductBySlug(@Res() res: Response, @Param('slug') slug: string) {
     const product: Product = await this.productService.getProductBySlug(slug);
@@ -34,23 +39,28 @@ export class ProductController {
     });
   }
 
-  @Post('/createProducts')
-  async createProducts(@Body() inputs: CreateProductInput[]) {
-    return await this.productService.createProducts(inputs);
-  }
-
+  @UseGuards(AuthenticationGuard)
   @Post('')
-  async createProduct(@Body() input: CreateProductInput) {
-    return await this.productService.createProduct(input);
+  async createProduct(
+    @Body() input: CreateProductInput,
+    @CurrentUser() user: User,
+  ) {
+    return await this.productService.createProduct(input, user);
   }
 
+  @UseGuards(AuthenticationGuard)
   @Put('')
   async updateProduct(
     @Res() res: Response,
     @Body() input: UpdateProductInput,
     @Body() id: string,
+    @CurrentUser() user: User,
   ) {
-    const updatedProduct = await this.productService.updateProduct(input, id);
+    const updatedProduct = await this.productService.updateProduct(
+      input,
+      id,
+      user,
+    );
     if (updatedProduct)
       return res.status(HttpStatus.OK).json({
         msg: 'updated success',
@@ -67,8 +77,14 @@ export class ProductController {
     return this.productService.getAllProduct();
   }
 
+  @UseGuards(AuthenticationGuard)
   @Delete('')
-  async deleteProduct(@Res() res: Response, @Body() id: string) {
-    return this.productService.deleteProduct(id);
+  async deleteProduct(
+    @Res() res: Response,
+    @Body() id: string,
+    @CurrentUser() user: User,
+  ) {
+    console.log('user : ', user);
+    return this.productService.deleteProduct(id, user);
   }
 }

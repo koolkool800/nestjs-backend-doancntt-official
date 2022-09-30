@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { slugConvert } from 'src/utils/slugConvert';
+import { User } from '../user/entities/user.entity';
 import { CreateProductInput, UpdateProductInput } from './dto/product.dto';
 import { Product } from './entities/product.enties';
 import { ProductDocument } from './schemas/product.schema';
@@ -24,12 +25,16 @@ export class ProductService {
     return await this.productModel.find({ slug });
   }
 
-  //
-  async createProduct(input: CreateProductInput): Promise<Product> {
+  async createProduct(
+    input: CreateProductInput,
+    userInput: User,
+  ): Promise<Product> {
     const productName = input.name;
     const productSlug = slugConvert(productName);
-
+    //
     input.slug = productSlug;
+    input.createdBy = userInput;
+
     const newProduct = await this.productModel.create(input);
 
     return await newProduct.save();
@@ -38,6 +43,7 @@ export class ProductService {
   async updateProduct(
     input: UpdateProductInput,
     _id: string,
+    userInput: User,
   ): Promise<Product> {
     const findProduct = await this.productModel.findById(_id);
     console.log(findProduct);
@@ -47,7 +53,7 @@ export class ProductService {
     input.slug = productSlug;
     console.log('input slug : ', input.slug);
 
-    if (findProduct) {
+    if (findProduct && findProduct.createdBy._id === userInput._id) {
       const updatedProduct = await this.productModel.findByIdAndUpdate(_id, {
         ...input,
         slug: input.slug,
@@ -57,24 +63,13 @@ export class ProductService {
     return null;
   }
 
-  async deleteProduct(_id: string): Promise<boolean> {
-    const findProduct = this.productModel.findByIdAndRemove(_id);
-    if (findProduct) return true;
+  async deleteProduct(_id: string, user: User): Promise<boolean> {
+    const findProduct = await this.productModel.findByIdAndRemove(_id);
+    if (findProduct && findProduct.createdBy._id === user._id) return true;
     return false;
   }
 
   async deleteAllProduct(): Promise<Product[]> {
     return await this.productModel.find().deleteMany().exec();
-  }
-
-  async createProducts(inputs: CreateProductInput[]): Promise<Product[]> {
-    const products: Product[] = [];
-
-    inputs.map(async (input) => {
-      const product = await this.createProduct(input);
-      products.push(product);
-    });
-
-    return products;
   }
 }
