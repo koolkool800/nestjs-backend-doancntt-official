@@ -16,6 +16,7 @@ import { AuthService } from './auth.service';
 import { SignInInput, SignUpInput } from './dto/auth.dto';
 import { AuthenticationGuard } from '../common/guards/auth.guard';
 import { LocalAuthGuard } from '../common/guards/local.guard';
+import { User } from 'src/modules/user/entities/user.entity';
 
 @Controller('auth')
 export class AuthController {
@@ -55,10 +56,13 @@ export class AuthController {
 
     if (user) {
       return response.status(HttpStatus.OK).json({
-        user: {
+        user: <User>{
           email: user.email,
-          id: user._id,
-          name: user.displayName,
+          _id: user._id,
+          displayName: user.displayName,
+          phoneNumber: user.phoneNumber,
+          role: user.role,
+          permissions: user.permissions,
         },
       });
     }
