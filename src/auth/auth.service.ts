@@ -12,6 +12,8 @@ import { SignInInput, SignUpInput } from './dto/auth.dto';
 import { IJWTPayload } from './entities/auth.entity';
 import * as bcrypt from 'bcrypt';
 import { RoleEnum } from 'src/constants/enum';
+import { IUser } from 'src/modules/user/interfaces/user';
+import { IAdmin } from 'src/modules/admin/interfaces/admin';
 @Injectable()
 export class AuthService {
   constructor(
@@ -70,5 +72,12 @@ export class AuthService {
 
   async getAllUSer() {
     return await this.userService.getAllUser();
+  }
+
+  async getUserByEmail(email: string): Promise<IUser | IAdmin> {
+    const foundUser = await this.userService.getUserByEmail(email);
+
+    if (!foundUser) return null;
+    return foundUser;
   }
 }

@@ -44,8 +44,26 @@ export class AuthController {
   }
 
   @UseGuards(AuthenticationGuard)
-  @Get('')
+  @Get('/users')
   async getAllUser() {
     return await this.authService.getAllUSer();
+  }
+
+  @Get('')
+  async getUserByEmail(@Body() email: string, @Res() response: Response) {
+    const user = await this.authService.getUserByEmail(email);
+
+    if (user) {
+      return response.status(HttpStatus.OK).json({
+        user: {
+          email: user.email,
+          id: user._id,
+          name: user.displayName,
+        },
+      });
+    }
+    return response.status(HttpStatus.BAD_REQUEST).json({
+      user: null,
+    });
   }
 }
