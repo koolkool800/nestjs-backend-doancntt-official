@@ -60,6 +60,7 @@ export class AdminService {
       const payload: IJWTPayload = {
         _id: loginValid._id,
         role: RoleEnum.ADMIN,
+        email: loginValid.email,
       };
 
       console.log('payload : ', payload);

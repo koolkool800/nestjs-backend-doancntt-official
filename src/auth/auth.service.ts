@@ -36,6 +36,7 @@ export class AuthService {
       const payload: IJWTPayload = {
         _id: loginValid._id,
         role: RoleEnum.USER,
+        email: loginValid.email,
       };
 
       const returnPayload = {
