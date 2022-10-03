@@ -55,7 +55,7 @@ export class AuthService {
   }
 
   async authentication(email: string, password: string): Promise<any> {
-    const user = await this.userService.getUserByEmail({ email: email });
+    const user = await this.userService.getUserByEmail(email);
 
     const passwordValid = await this.userService.comparePassword(
       password,
