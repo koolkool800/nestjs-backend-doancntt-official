@@ -12,6 +12,10 @@ export class IJWTPayload {
   @Prop()
   @IsNotEmpty()
   role: RoleEnum;
+
+  @Prop()
+  @IsNotEmpty()
+  email: string;
 }
 
 export class JWTPayload {

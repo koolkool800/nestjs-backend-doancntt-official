@@ -33,8 +33,8 @@ export class UserService {
     return false;
   }
 
-  async getUserByEmail(filter: FilterUser): Promise<User | undefined> {
-    return this.userModel.findOne({ email: filter.email });
+  async getUserByEmail(email): Promise<User | undefined> {
+    return this.userModel.findOne(email);
   }
 
   async getUserById(filter: FilterUser): Promise<User> {
