@@ -12,6 +12,10 @@ export class CategoryService {
     @InjectModel(Category.name) private categoryModel: Model<CategoryDocument>,
   ) {}
 
+  async getCategoryBySlug(slug: string) {
+    return await this.categoryModel.findOne({ slug: slug });
+  }
+
   getAllCategory() {
     return this.categoryModel.find();
   }

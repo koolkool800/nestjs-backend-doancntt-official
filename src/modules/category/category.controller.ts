@@ -18,10 +18,31 @@ import { RolesGuard } from 'src/common/guards/roles.guard';
 import { RoleEnum } from 'src/constants/enum';
 import { CategoryService } from './category.service';
 import { CreateCategoryInput, UpdateCategoryInput } from './dto/category.dto';
+import { Category } from './entities/category.entity';
 
 @Controller('categories')
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
+
+  @Get('/:slug')
+  async getCategoryBySlug(
+    @Res() response: Response,
+    @Param('slug') slug: string,
+  ) {
+    const category: Category = await this.categoryService.getCategoryBySlug(
+      slug,
+    );
+
+    if (category)
+      return response.status(HttpStatus.OK).json({
+        msg: 'Get success',
+        data: category,
+      });
+    return response.status(HttpStatus.BAD_REQUEST).json({
+      msg: 'Get failure',
+      data: null,
+    });
+  }
 
   @Get()
   async getAllCategory() {
