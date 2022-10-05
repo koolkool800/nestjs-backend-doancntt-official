@@ -15,6 +15,9 @@ export class Category implements ICategory {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Category.name })
   parent?: Category;
 
+  @Prop()
+  slug?: string;
+
   @Prop({ default: Date.now() })
   createdAt: Date;
 

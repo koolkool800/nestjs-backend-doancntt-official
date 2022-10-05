@@ -17,7 +17,7 @@ import { AuthenticationGuard } from 'src/common/guards/auth.guard';
 import { RolesGuard } from 'src/common/guards/roles.guard';
 import { RoleEnum } from 'src/constants/enum';
 import { CategoryService } from './category.service';
-import { CreateCategoryInput } from './dto/category.dto';
+import { CreateCategoryInput, UpdateCategoryInput } from './dto/category.dto';
 
 @Controller('categories')
 export class CategoryController {
@@ -48,8 +48,25 @@ export class CategoryController {
     });
   }
 
-  @Put()
-  async updateCategory() {}
+  @Roles(RoleEnum.ADMIN)
+  @UseGuards(AuthenticationGuard, RolesGuard)
+  @Put('')
+  async updateCategory(
+    @Res() response: Response,
+    @Body() input: UpdateCategoryInput,
+  ) {
+    const updatedCategory = await this.categoryService.updateCategory(input);
+
+    if (updatedCategory)
+      return response.status(HttpStatus.OK).json({
+        msg: 'created success',
+        data: updatedCategory,
+      });
+    return response.status(HttpStatus.BAD_REQUEST).json({
+      msg: 'created failure',
+      data: null,
+    });
+  }
 
   @Delete('')
   async deleteAllCategory() {

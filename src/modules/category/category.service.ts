@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { slugConvert } from 'src/utils/slugConvert';
 import { CreateCategoryInput, UpdateCategoryInput } from './dto/category.dto';
 import { Category } from './entities/category.entity';
 import { CategoryDocument } from './Schemas/category.schema';
@@ -23,7 +24,8 @@ export class CategoryService {
 
     try {
       if (foundCategory) {
-        const newCategory = new this.categoryModel(input);
+        let newCategory = new this.categoryModel(input);
+        newCategory.slug = slugConvert(input.name);
         await newCategory.save();
         if (parent) {
           const categoryFather = await this.categoryModel.findById(parent);
@@ -38,7 +40,16 @@ export class CategoryService {
     }
   }
 
-  updateCategory(input: UpdateCategoryInput) {}
+  async updateCategory(input: UpdateCategoryInput) {
+    const findCategory = await this.categoryModel.findOne({ name: input.name });
+
+    if (findCategory) {
+      findCategory.slug = slugConvert(input.name);
+
+      return await findCategory.save();
+    }
+    return null;
+  }
 
   deleteCategory() {}
 
