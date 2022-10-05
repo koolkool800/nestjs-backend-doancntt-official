@@ -3,7 +3,11 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { slugConvert } from 'src/utils/slugConvert';
 import { User } from '../user/entities/user.entity';
-import { CreateProductInput, UpdateProductInput } from './dto/product.dto';
+import {
+  CreateProductInput,
+  FilterProductInput,
+  UpdateProductInput,
+} from './dto/product.dto';
 import { Product } from './entities/product.enties';
 import { ProductDocument } from './schemas/product.schema';
 
@@ -15,6 +19,10 @@ export class ProductService {
 
   async getAllProduct(): Promise<Product[]> {
     return this.productModel.find();
+  }
+
+  async getAllProductByFilter(category: string) {
+    return this.productModel.find({ category });
   }
 
   async getProductById(id: string) {

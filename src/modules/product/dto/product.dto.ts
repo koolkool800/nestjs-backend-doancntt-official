@@ -90,4 +90,6 @@ export class UpdateProductInput implements Partial<BaseProductInput> {
   slug?: string;
 }
 
-export class FilterProduct {}
+export class FilterProductInput {
+  category?: Category;
+}
