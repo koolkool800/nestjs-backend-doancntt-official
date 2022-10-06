@@ -60,12 +60,16 @@ export class ProductService {
 
     input.slug = productSlug;
     console.log('input slug : ', input.slug);
-
-    if (findProduct && findProduct.createdBy._id === userInput._id) {
+    if (
+      findProduct &&
+      findProduct.createdBy._id.toString() === userInput._id.toString()
+    ) {
       const updatedProduct = await this.productModel.findByIdAndUpdate(_id, {
         ...input,
+        images: [input.images],
         slug: input.slug,
       });
+      console.log('updated', updatedProduct);
       return await updatedProduct.save();
     }
     return null;

@@ -44,8 +44,9 @@ export class CategoryService {
     }
   }
 
-  async updateCategory(input: UpdateCategoryInput) {
-    const findCategory = await this.categoryModel.findOne({ name: input.name });
+  async updateCategory(input: UpdateCategoryInput, _id: string) {
+    // const findCategory = await this.categoryModel.findOne({ name: input.name });
+    const findCategory = await this.categoryModel.findByIdAndUpdate(_id, input);
 
     if (findCategory) {
       findCategory.slug = slugConvert(input.name);
@@ -56,8 +57,4 @@ export class CategoryService {
   }
 
   deleteCategory() {}
-
-  async deleteAllCategory() {
-    return await this.categoryModel.find().deleteMany().exec();
-  }
 }

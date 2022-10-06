@@ -69,16 +69,16 @@ export class ProductController {
   }
 
   @UseGuards(AuthenticationGuard)
-  @Put('')
+  @Put('/:_id')
   async updateProduct(
     @Res() res: Response,
     @Body() input: UpdateProductInput,
-    @Body() id: string,
+    @Param('_id') _id: string,
     @CurrentUser() user: User,
   ) {
     const updatedProduct = await this.productService.updateProduct(
       input,
-      id,
+      _id,
       user,
     );
     if (updatedProduct)

@@ -71,12 +71,17 @@ export class CategoryController {
 
   @Roles(RoleEnum.ADMIN)
   @UseGuards(AuthenticationGuard, RolesGuard)
-  @Put('')
+  @Put('/:_id')
   async updateCategory(
     @Res() response: Response,
-    @Body() input: UpdateCategoryInput,
+    @Param('_id') _id: string,
+    @Body()
+    input: UpdateCategoryInput,
   ) {
-    const updatedCategory = await this.categoryService.updateCategory(input);
+    const updatedCategory = await this.categoryService.updateCategory(
+      input,
+      _id,
+    );
 
     if (updatedCategory)
       return response.status(HttpStatus.OK).json({
@@ -87,10 +92,5 @@ export class CategoryController {
       msg: 'created failure',
       data: null,
     });
-  }
-
-  @Delete('')
-  async deleteAllCategory() {
-    return this.categoryService.deleteAllCategory();
   }
 }
