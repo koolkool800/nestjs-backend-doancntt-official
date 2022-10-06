@@ -15,13 +15,34 @@ import { Response } from 'express';
 import { CurrentUser } from 'src/common/decorators/user.decorator';
 import { AuthenticationGuard } from 'src/common/guards/auth.guard';
 import { User } from '../user/entities/user.entity';
-import { CreateProductInput, UpdateProductInput } from './dto/product.dto';
+import {
+  CreateProductInput,
+  FilterProductInput,
+  UpdateProductInput,
+} from './dto/product.dto';
 import { Product } from './entities/product.enties';
 import { ProductService } from './product.service';
 
 @Controller('products')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
+
+  @Get('/filter/:category')
+  async getProductByFilter(
+    @Res() res: Response,
+    @Param('category') category: string,
+  ) {
+    const products = await this.productService.getAllProductByFilter(category);
+
+    if (products)
+      return res.status(HttpStatus.OK).json({
+        data: products,
+      });
+    return res.status(HttpStatus.BAD_REQUEST).json({
+      msg: 'Get failure',
+      data: null,
+    });
+  }
 
   @Get('/:slug')
   async getProductBySlug(@Res() res: Response, @Param('slug') slug: string) {
@@ -48,16 +69,16 @@ export class ProductController {
   }
 
   @UseGuards(AuthenticationGuard)
-  @Put('')
+  @Put('/:_id')
   async updateProduct(
     @Res() res: Response,
     @Body() input: UpdateProductInput,
-    @Body() id: string,
+    @Param('_id') _id: string,
     @CurrentUser() user: User,
   ) {
     const updatedProduct = await this.productService.updateProduct(
       input,
-      id,
+      _id,
       user,
     );
     if (updatedProduct)

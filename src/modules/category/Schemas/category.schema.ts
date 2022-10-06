@@ -19,6 +19,9 @@ export const CategorySchema = new Schema<Category>(
       ref: Category.name,
       default: null,
     },
+    slug: {
+      type: String,
+    },
     createdAt: {
       type: Date,
       default: Date.now(),

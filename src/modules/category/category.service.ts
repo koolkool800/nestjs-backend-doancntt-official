@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { slugConvert } from 'src/utils/slugConvert';
 import { CreateCategoryInput, UpdateCategoryInput } from './dto/category.dto';
 import { Category } from './entities/category.entity';
 import { CategoryDocument } from './Schemas/category.schema';
@@ -10,6 +11,10 @@ export class CategoryService {
   constructor(
     @InjectModel(Category.name) private categoryModel: Model<CategoryDocument>,
   ) {}
+
+  async getCategoryBySlug(slug: string) {
+    return await this.categoryModel.findOne({ slug: slug });
+  }
 
   getAllCategory() {
     return this.categoryModel.find();
@@ -23,7 +28,8 @@ export class CategoryService {
 
     try {
       if (foundCategory) {
-        const newCategory = new this.categoryModel(input);
+        let newCategory = new this.categoryModel(input);
+        newCategory.slug = slugConvert(input.name);
         await newCategory.save();
         if (parent) {
           const categoryFather = await this.categoryModel.findById(parent);
@@ -38,11 +44,17 @@ export class CategoryService {
     }
   }
 
-  updateCategory(input: UpdateCategoryInput) {}
+  async updateCategory(input: UpdateCategoryInput, _id: string) {
+    // const findCategory = await this.categoryModel.findOne({ name: input.name });
+    const findCategory = await this.categoryModel.findByIdAndUpdate(_id, input);
+
+    if (findCategory) {
+      findCategory.slug = slugConvert(input.name);
+
+      return await findCategory.save();
+    }
+    return null;
+  }
 
   deleteCategory() {}
-
-  async deleteAllCategory() {
-    return await this.categoryModel.find().deleteMany().exec();
-  }
 }
