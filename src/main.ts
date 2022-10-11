@@ -7,7 +7,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors({
     credentials: true,
-    origin: ['http://localhost:3000'],
+    origin: ['http://localhost:3000','https://bvstore.netlify.app/'],
   });
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalGuards();
