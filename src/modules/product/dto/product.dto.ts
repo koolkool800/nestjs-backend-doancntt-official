@@ -1,5 +1,5 @@
 import { Prop } from '@nestjs/mongoose';
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, Min } from 'class-validator';
 import { Types } from 'mongoose';
 import { StatusEnum } from 'src/constants/enum';
 import { Category } from 'src/modules/category/entities/category.entity';
@@ -92,4 +92,16 @@ export class UpdateProductInput implements Partial<BaseProductInput> {
 
 export class FilterProductInput {
   category?: Category;
+}
+
+export class PaginationInput {
+  @IsOptional()
+  @IsNumber()
+  @Min(1)
+  page?: number;
+
+  @IsOptional()
+  @IsNumber()
+  @Min(10)
+  limit?: number;
 }

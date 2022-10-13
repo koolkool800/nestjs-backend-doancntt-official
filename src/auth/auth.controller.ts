@@ -9,6 +9,7 @@ import {
   Res,
   HttpStatus,
   UseGuards,
+  Put,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Response } from 'express';
@@ -17,6 +18,11 @@ import { SignInInput, SignUpInput } from './dto/auth.dto';
 import { AuthenticationGuard } from '../common/guards/auth.guard';
 import { LocalAuthGuard } from '../common/guards/local.guard';
 import { User } from 'src/modules/user/entities/user.entity';
+import {
+  UpdateUserInput,
+  UpdateUserPassInput,
+} from 'src/modules/user/dto/user.dto';
+import { CurrentUser } from 'src/common/decorators/user.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -69,5 +75,27 @@ export class AuthController {
     return response.status(HttpStatus.BAD_REQUEST).json({
       user: null,
     });
+  }
+
+  @UseGuards(AuthenticationGuard)
+  @Put('')
+  async updateUser(@Body() input: UpdateUserInput, @CurrentUser() user: User) {
+    const updatedUser = await this.authService.updateUser(input, user);
+
+    return updatedUser;
+  }
+
+  @UseGuards(AuthenticationGuard)
+  @Put('update-password')
+  async updatePassword(
+    @Body() input: UpdateUserPassInput,
+    @CurrentUser() user: User,
+  ) {
+    const updatePass = await this.authService.updatePassword(
+      user,
+      input.password,
+      input.newPassword,
+    );
+    return updatePass;
   }
 }
