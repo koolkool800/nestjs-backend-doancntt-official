@@ -78,7 +78,7 @@ export class AuthService {
     return await this.userService.getAllUser();
   }
 
-  async getUserByEmail(email: string): Promise<IUser | IAdmin> {
+  async getUserByEmail(email: string): Promise<IUser> {
     const foundUser = await this.userService.getUserByEmail(email);
 
     if (!foundUser) return null;

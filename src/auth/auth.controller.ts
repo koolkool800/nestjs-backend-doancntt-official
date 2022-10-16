@@ -69,6 +69,7 @@ export class AuthController {
           phoneNumber: user.phoneNumber,
           role: user.role,
           permissions: user.permissions,
+          address: user.address,
         },
       });
     }
