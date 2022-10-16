@@ -89,8 +89,7 @@ export class AuthService {
     //
     const updatedUser = await this.userService.updateUser(input, requestUser);
 
-    if (!updatedUser)
-      throw new HttpException('Khong update duoc', HttpStatus.BAD_REQUEST);
+    if (!updatedUser) return null;
     return updatedUser;
   }
 

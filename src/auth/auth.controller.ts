@@ -10,6 +10,7 @@ import {
   HttpStatus,
   UseGuards,
   Put,
+  HttpException,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Response } from 'express';
@@ -80,10 +81,22 @@ export class AuthController {
 
   @UseGuards(AuthenticationGuard)
   @Post('update-user')
-  async updateUser(@Body() input: UpdateUserInput, @CurrentUser() user: User) {
+  async updateUser(
+    @Res() response: Response,
+    @Body() input: UpdateUserInput,
+    @CurrentUser() user: User,
+  ) {
     const updatedUser = await this.authService.updateUser(input, user);
 
-    return updatedUser;
+    if (!updatedUser)
+      return response.status(HttpStatus.BAD_REQUEST).json({
+        message: 'Updated failure',
+        status: HttpStatus.BAD_REQUEST,
+      });
+    return response.status(HttpStatus.OK).json({
+      message: 'Updated success',
+      status: HttpStatus.OK,
+    });
   }
 
   @UseGuards(AuthenticationGuard)
