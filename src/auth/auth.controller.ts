@@ -78,7 +78,7 @@ export class AuthController {
   }
 
   @UseGuards(AuthenticationGuard)
-  @Put('')
+  @Post('update-user')
   async updateUser(@Body() input: UpdateUserInput, @CurrentUser() user: User) {
     const updatedUser = await this.authService.updateUser(input, user);
 
