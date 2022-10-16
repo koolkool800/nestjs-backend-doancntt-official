@@ -17,8 +17,17 @@ export class ProductService {
     @InjectModel(Product.name) private productModel: Model<ProductDocument>,
   ) {}
 
-  async getAllProduct(): Promise<Product[]> {
-    return this.productModel.find();
+  async getAllProduct(
+    page: number,
+    limit: number,
+  ): Promise<{ result: Product[]; count: number }> {
+    const result = await this.productModel
+      .find()
+      .skip((page - 1) * limit)
+      .limit(limit);
+    const count = await this.productModel.count();
+
+    return { result, count };
   }
 
   async getAllProductByFilter(category: string) {

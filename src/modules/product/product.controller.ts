@@ -8,6 +8,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   Res,
   UseGuards,
 } from '@nestjs/common';
@@ -18,6 +19,7 @@ import { User } from '../user/entities/user.entity';
 import {
   CreateProductInput,
   FilterProductInput,
+  PaginationInput,
   UpdateProductInput,
 } from './dto/product.dto';
 import { Product } from './entities/product.enties';
@@ -93,8 +95,11 @@ export class ProductController {
   }
 
   @Get('')
-  async getAllProduct() {
-    return this.productService.getAllProduct();
+  async getAllProduct(
+    @Query('page') page: number,
+    @Query('limit') limit: number,
+  ) {
+    return await this.productService.getAllProduct(page, limit);
   }
 
   @UseGuards(AuthenticationGuard)

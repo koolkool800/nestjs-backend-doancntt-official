@@ -14,6 +14,8 @@ import * as bcrypt from 'bcrypt';
 import { RoleEnum } from 'src/constants/enum';
 import { IUser } from 'src/modules/user/interfaces/user';
 import { IAdmin } from 'src/modules/admin/interfaces/admin';
+import { User } from 'src/modules/user/entities/user.entity';
+import { UpdateUserInput } from 'src/modules/user/dto/user.dto';
 @Injectable()
 export class AuthService {
   constructor(
@@ -68,16 +70,40 @@ export class AuthService {
     return null;
   }
 
-  async setJWT(): Promise<any> {}
+  async setJWT(): Promise<any> {
+    // @t
+  }
 
   async getAllUSer() {
     return await this.userService.getAllUser();
   }
 
-  async getUserByEmail(email: string): Promise<IUser | IAdmin> {
+  async getUserByEmail(email: string): Promise<IUser> {
     const foundUser = await this.userService.getUserByEmail(email);
 
     if (!foundUser) return null;
     return foundUser;
+  }
+
+  async updateUser(input: UpdateUserInput, requestUser: User): Promise<User> {
+    //
+    const updatedUser = await this.userService.updateUser(input, requestUser);
+
+    if (!updatedUser) return null;
+    return updatedUser;
+  }
+
+  async updatePassword(
+    requestUser: User,
+    currentPass: string,
+    newPass: string,
+  ) {
+    const updatePass = await this.userService.updatePassword(
+      requestUser,
+      currentPass,
+      newPass,
+    );
+
+    return updatePass;
   }
 }
