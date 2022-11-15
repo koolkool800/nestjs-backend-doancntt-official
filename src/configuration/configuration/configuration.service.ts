@@ -5,6 +5,6 @@ export class ConfigurationService {
   public port;
 
   constructor() {
-    this.port = process.env.PORT || 2050;
+    this.port = process.env.PORT || 4000;
   }
 }

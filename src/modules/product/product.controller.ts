@@ -94,6 +94,7 @@ export class ProductController {
     });
   }
 
+  @UseGuards(AuthenticationGuard)
   @Get('')
   async getAllProduct(
     @Query('page') page: number,

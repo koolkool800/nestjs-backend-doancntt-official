@@ -12,6 +12,7 @@ import { AdminModule } from './modules/admin/admin.module';
 import { CategoryModule } from './modules/category/category.module';
 import { ProductModule } from './modules/product/product.module';
 import { ConfigurationService } from './configuration/configuration/configuration.service';
+import { GoogleAuthenModule } from './modules/google-authen/google-authen.module';
 
 @Module({
   imports: [
@@ -26,15 +27,10 @@ import { ConfigurationService } from './configuration/configuration/configuratio
     AdminModule,
     CategoryModule,
     ProductModule,
+    GoogleAuthenModule,
   ],
   controllers: [],
-  providers: [
-    // {
-    //   provide: APP_GUARD,
-    //   useClass: RolesGuard,
-    // },
-    ConfigurationService,
-  ],
+  providers: [ConfigurationService],
 })
 export class AppModule {
   static port: number;
