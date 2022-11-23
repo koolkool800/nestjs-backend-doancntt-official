@@ -13,6 +13,7 @@ import { CategoryModule } from './modules/category/category.module';
 import { ProductModule } from './modules/product/product.module';
 import { ConfigurationService } from './configuration/configuration/configuration.service';
 import { GoogleAuthenModule } from './modules/google-authen/google-authen.module';
+import { StripeModule } from './stripe/stripe.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { GoogleAuthenModule } from './modules/google-authen/google-authen.module
     CategoryModule,
     ProductModule,
     GoogleAuthenModule,
+    StripeModule,
   ],
   controllers: [],
   providers: [ConfigurationService],
