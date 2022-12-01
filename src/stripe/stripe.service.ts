@@ -10,7 +10,6 @@ export class StripeService {
       apiVersion: '2022-11-15',
     });
   }
-
   async payForProduct(price: number, id: string) {
     try {
       return await this.stripe.paymentIntents.create({
