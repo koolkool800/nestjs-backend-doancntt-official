@@ -29,7 +29,6 @@ import { StripeModule } from './stripe/stripe.module';
     CategoryModule,
     ProductModule,
     GoogleAuthenModule,
-    // StripeModule,
   ],
   controllers: [],
   providers: [ConfigurationService],
