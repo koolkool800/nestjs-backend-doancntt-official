@@ -1,13 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { FilterQuery, Model } from 'mongoose';
 import { slugConvert } from 'src/utils/slugConvert';
 import { User } from '../user/entities/user.entity';
-import {
-  CreateProductInput,
-  FilterProductInput,
-  UpdateProductInput,
-} from './dto/product.dto';
+import { CreateProductInput, UpdateProductInput } from './dto/product.dto';
 import { Product } from './entities/product.enties';
 import { ProductDocument } from './schemas/product.schema';
 
@@ -20,14 +16,31 @@ export class ProductService {
   async getAllProduct(
     page: number,
     limit: number,
+    keyword: string,
   ): Promise<{ result: Product[]; count: number }> {
-    const result = await this.productModel
-      .find()
-      .skip((page - 1) * limit)
-      .limit(limit);
-    const count = await this.productModel.count();
+    let filter = {};
 
-    return { result, count };
+    if (keyword) {
+      filter = {
+        slug: {
+          $regex: keyword,
+        },
+      };
+    } else {
+      filter = {};
+    }
+
+    try {
+      const result = await this.productModel
+        .find(filter)
+        .skip((page - 1) * limit)
+        .limit(limit);
+      const count = await this.productModel.count();
+      return { result, count };
+    } catch (error) {
+      console.log('errorr : ', error);
+      return { result: [], count: 0 };
+    }
   }
 
   async getAllProductByFilter(category: string) {

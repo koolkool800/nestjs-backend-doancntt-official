@@ -19,6 +19,7 @@ import { User } from '../user/entities/user.entity';
 import {
   CreateProductInput,
   FilterProductInput,
+  GetProductFilterInput,
   PaginationInput,
   UpdateProductInput,
 } from './dto/product.dto';
@@ -94,13 +95,10 @@ export class ProductController {
     });
   }
 
-  // @UseGuards(AuthenticationGuard)
   @Get('')
-  async getAllProduct(
-    @Query('page') page: number,
-    @Query('limit') limit: number,
-  ) {
-    return await this.productService.getAllProduct(page, limit);
+  async getAllProduct(@Query() filterProducts: GetProductFilterInput) {
+    const { keyword, limit, page } = filterProducts;
+    return await this.productService.getAllProduct(page, limit, keyword);
   }
 
   @UseGuards(AuthenticationGuard)

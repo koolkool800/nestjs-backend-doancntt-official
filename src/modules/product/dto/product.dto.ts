@@ -105,3 +105,14 @@ export class PaginationInput {
   @Min(10)
   limit?: number;
 }
+
+export class GetProductFilterInput {
+  @Prop()
+  page: number;
+
+  @Prop()
+  limit: number;
+
+  @Prop()
+  keyword: string;
+}
