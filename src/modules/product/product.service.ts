@@ -39,6 +39,7 @@ export class ProductService {
       return { result, count };
     } catch (error) {
       console.log('errorr : ', error);
+
       return { result: [], count: 0 };
     }
   }
