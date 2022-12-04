@@ -29,6 +29,7 @@ export class ProductService {
     } else {
       filter = {};
     }
+
     try {
       const result = await this.productModel
         .find(filter)
