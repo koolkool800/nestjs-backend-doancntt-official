@@ -57,8 +57,11 @@ export class AuthController {
     return await this.authService.getAllUSer();
   }
 
-  @Get('')
-  async getUserByEmail(@Body() email: string, @Res() response: Response) {
+  @Get('/email/:email')
+  async getUserByEmail(
+    @Param('email') email: string,
+    @Res() response: Response,
+  ) {
     const user = await this.authService.getUserByEmail(email);
 
     if (user) {

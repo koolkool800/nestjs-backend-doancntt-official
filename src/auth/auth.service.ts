@@ -79,7 +79,7 @@ export class AuthService {
   }
 
   async getUserByEmail(email: string): Promise<IUser> {
-    const foundUser = await this.userService.getUserByEmail(email);
+    const foundUser = await this.userService.getUserByEmail2(email);
 
     if (!foundUser) return null;
     return foundUser;

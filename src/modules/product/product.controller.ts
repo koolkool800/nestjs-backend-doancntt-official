@@ -112,8 +112,8 @@ export class ProductController {
     return this.productService.deleteProduct(id, user);
   }
 
-  @Put('/update/all')
-  async updateAll() {
-    return await this.productService.updateAllProduct();
-  }
+  // @Put('/update/all')
+  // async updateAll() {
+  //   return await this.productService.updateAllProduct();
+  // }
 }

@@ -44,6 +44,10 @@ export class UserService {
     return this.userModel.findOne(email);
   }
 
+  async getUserByEmail2(email): Promise<User | undefined> {
+    return this.userModel.findOne({ email });
+  }
+
   async getUserById(filter: FilterUser): Promise<User> {
     return this.userModel.findById(filter.id);
   }
