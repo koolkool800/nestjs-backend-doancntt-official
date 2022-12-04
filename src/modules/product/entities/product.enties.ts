@@ -16,6 +16,9 @@ export class Product implements IProduct {
   images?: string[];
 
   @Prop()
+  amount?: number;
+
+  @Prop()
   desription?: string;
 
   @Prop()

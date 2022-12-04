@@ -23,6 +23,9 @@ export const ProductSchema = new Schema<Product>(
     images: {
       type: [String],
     },
+    amount: {
+      type: Number,
+    },
     price: {
       type: String,
     },

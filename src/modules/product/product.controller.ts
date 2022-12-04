@@ -111,4 +111,9 @@ export class ProductController {
     console.log('user : ', user);
     return this.productService.deleteProduct(id, user);
   }
+
+  @Put('/update/all')
+  async updateAll() {
+    return await this.productService.updateAllProduct();
+  }
 }

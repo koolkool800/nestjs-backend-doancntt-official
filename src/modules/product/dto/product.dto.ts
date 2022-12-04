@@ -48,6 +48,9 @@ export class CreateProductInput implements Partial<BaseProductInput> {
   price: string;
 
   @Prop()
+  amount: number;
+
+  @Prop()
   status?: StatusEnum;
 
   @Prop()
@@ -73,6 +76,9 @@ export class UpdateProductInput implements Partial<BaseProductInput> {
 
   @Prop()
   price?: string;
+
+  @Prop()
+  amount?: number;
 
   @Prop()
   status?: StatusEnum;
