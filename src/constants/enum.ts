@@ -22,3 +22,8 @@ export enum PermissionEnum {
   UPDATE = 'UPDATE',
   DELETE = 'DELETE',
 }
+
+export enum TransactionStatusEnum {
+  PENDING = 'PENDING',
+  INPROGRESS = 'INPROGRESS',
+}

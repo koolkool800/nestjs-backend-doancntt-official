@@ -41,7 +41,7 @@ export class CreateProductInput implements Partial<BaseProductInput> {
   name: string;
 
   @Prop()
-  @IsNotEmpty()
+  // @IsNotEmpty()
   images: string[];
 
   @Prop()
@@ -61,7 +61,6 @@ export class CreateProductInput implements Partial<BaseProductInput> {
   category: Category;
 
   @Prop()
-  @IsNotEmpty()
   createdBy: User;
 
   @Prop()
@@ -121,4 +120,9 @@ export class GetProductFilterInput {
 
   @Prop()
   keyword: string;
+}
+
+export class TestingInput {
+  @Prop()
+  ids: string[];
 }

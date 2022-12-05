@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model } from 'mongoose';
 import { slugConvert } from 'src/utils/slugConvert';
@@ -56,6 +56,12 @@ export class ProductService {
     return await this.productModel.find({ slug });
   }
 
+  async getManyProductById(ids: string[]) {
+    return this.productModel.find({
+      _id: { $in: [ids.map((id) => id)] },
+    });
+  }
+
   async createProduct(
     input: CreateProductInput,
     userInput: User,
@@ -77,27 +83,29 @@ export class ProductService {
 
   async updateProduct(
     input: UpdateProductInput,
-    _id: string,
+    id: string,
     userInput: User,
   ): Promise<Product> {
-    const findProduct = await this.productModel.findById(_id);
+    const findProduct = await this.productModel.findById(id);
     const productName = findProduct.name;
     const productSlug = slugConvert(productName);
 
     input.slug = productSlug;
-    if (
-      findProduct &&
-      findProduct.createdBy._id.toString() === userInput._id.toString()
-    ) {
-      const updatedProduct = await this.productModel.findByIdAndUpdate(_id, {
-        ...input,
-        images: [input.images],
-        slug: input.slug,
-        amount: input.amount,
-      });
-      return await updatedProduct.save();
+    try {
+      if (findProduct) {
+        const updatedProduct = await this.productModel.findByIdAndUpdate(id, {
+          ...input,
+          images: [input.images],
+          slug: input.slug,
+          amount: input.amount,
+        });
+        return await updatedProduct.save();
+      }
+      return null;
+    } catch (error) {
+      console.log('errror', error);
+      throw new BadRequestException('Errror return from trycatch block');
     }
-    return null;
   }
 
   async deleteProduct(_id: string, user: User): Promise<boolean> {

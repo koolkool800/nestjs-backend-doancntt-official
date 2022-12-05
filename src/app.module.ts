@@ -14,6 +14,7 @@ import { ProductModule } from './modules/product/product.module';
 import { ConfigurationService } from './configuration/configuration/configuration.service';
 import { GoogleAuthenModule } from './modules/google-authen/google-authen.module';
 import { StripeModule } from './stripe/stripe.module';
+import { TransactionModule } from './modules/transaction/transaction.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { StripeModule } from './stripe/stripe.module';
     CategoryModule,
     ProductModule,
     GoogleAuthenModule,
+    TransactionModule,
   ],
   controllers: [],
   providers: [ConfigurationService],

@@ -13,14 +13,18 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Response } from 'express';
+import { Roles } from 'src/common/decorators/role.decorator';
 import { CurrentUser } from 'src/common/decorators/user.decorator';
 import { AuthenticationGuard } from 'src/common/guards/auth.guard';
+import { RolesGuard } from 'src/common/guards/roles.guard';
+import { RoleEnum } from 'src/constants/enum';
 import { User } from '../user/entities/user.entity';
 import {
   CreateProductInput,
   FilterProductInput,
   GetProductFilterInput,
   PaginationInput,
+  TestingInput,
   UpdateProductInput,
 } from './dto/product.dto';
 import { Product } from './entities/product.enties';
@@ -29,6 +33,12 @@ import { ProductService } from './product.service';
 @Controller('products')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
+
+  @Get('findMany')
+  async getMany(@Body() input: TestingInput) {
+    const { ids } = input;
+    return await this.productService.getManyProductById(ids);
+  }
 
   @Get('/filter/:category')
   async getProductByFilter(
@@ -72,16 +82,16 @@ export class ProductController {
   }
 
   @UseGuards(AuthenticationGuard)
-  @Put('/:_id')
+  @Put('/:id')
   async updateProduct(
     @Res() res: Response,
     @Body() input: UpdateProductInput,
-    @Param('_id') _id: string,
+    @Param('id') id: string,
     @CurrentUser() user: User,
   ) {
     const updatedProduct = await this.productService.updateProduct(
       input,
-      _id,
+      id,
       user,
     );
     if (updatedProduct)
