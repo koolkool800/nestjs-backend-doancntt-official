@@ -32,7 +32,7 @@ import { TransactionModule } from './modules/transaction/transaction.module';
     GoogleAuthenModule,
     TransactionModule,
   ],
-  controllers: [],
+  controllers: [AppController],
   providers: [ConfigurationService],
 })
 export class AppModule {
