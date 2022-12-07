@@ -15,17 +15,17 @@ import { TransactionService } from './transaction.service';
 export class TransactionController {
   constructor(private readonly transactionService: TransactionService) {}
 
-  @UseGuards(AuthenticationGuard)
-  @Get('')
-  async getAllTransactionByUser(@CurrentUser() user: User) {
-    return await this.transactionService.getAllTransactionsByUser(user);
-  }
-
   @Roles(RoleEnum.ADMIN)
   @UseGuards(AuthenticationGuard, RolesGuard)
   @Get('admin')
   async getAllTransactions() {
     return await this.transactionService.getAllTransactions();
+  }
+
+  @UseGuards(AuthenticationGuard)
+  @Get('')
+  async getAllTransactionByUser(@CurrentUser() user: User) {
+    return await this.transactionService.getAllTransactionsByUser(user);
   }
 
   @Roles(RoleEnum.ADMIN)
@@ -38,7 +38,7 @@ export class TransactionController {
   }
 
   @UseGuards(AuthenticationGuard)
-  @Post('')
+  @Post('create')
   async createTransaction(
     @Body() input: CreateTransactionInput,
     @CurrentUser() user: User,

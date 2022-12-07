@@ -57,6 +57,8 @@ export class ProductService {
   }
 
   async getManyProductById(ids: string[]) {
+    console.log({ ids });
+
     return this.productModel.find({
       _id: { $in: [ids.map((id) => id)] },
     });

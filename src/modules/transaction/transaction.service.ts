@@ -20,6 +20,8 @@ export class TransactionService {
 
   async getAllTransactions() {
     try {
+      console.log('try');
+
       const [transactions, count] = await Promise.all([
         this.transactionModel
           .find()
@@ -35,13 +37,7 @@ export class TransactionService {
         this.transactionModel.countDocuments(),
       ]);
 
-      const cloneTransaction = [...transactions];
-
-      cloneTransaction.map((trans) => {
-        trans.buyer['password'] = undefined;
-      });
-
-      return { result: cloneTransaction, count };
+      return { result: transactions, count };
     } catch (error) {
       console.log('error', error);
       return { result: [], count: 0 };
@@ -71,11 +67,11 @@ export class TransactionService {
 
       const cloneTransaction = [...transactions];
 
-      cloneTransaction.map((trans) => {
-        trans.buyer['password'] = undefined;
-      });
+      // cloneTransaction.map((trans) => {
+      //   trans.buyer['password'] = undefined;
+      // });
 
-      return { result: cloneTransaction, count };
+      return { result: transactions, count };
     } catch (error) {
       console.log('error', error);
       return { result: [], count: 0 };
@@ -90,6 +86,8 @@ export class TransactionService {
       const foundProducts = await this.productService.getManyProductById(
         products,
       );
+
+      console.log({ foundProducts });
 
       let price = 0;
       foundProducts.map((product) => {
